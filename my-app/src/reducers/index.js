@@ -26,19 +26,19 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 heroes: state.heroes.filter(el => el.id !== action.payload),
-                heroesLoadingStatus: 'idle'
+                
             }
         case 'HEROES_ADD':
             return {
                 ...state,
                 heroes: [...state.heroes, action.payload],
-                heroesLoadingStatus: 'idle'
+                
             }
         case 'HEROES_FILTER':
             return {
                 ...state,
                 filters: action.payload,
-                heroesLoadingStatus: 'idle'
+                
             }          
         default: return state
     }

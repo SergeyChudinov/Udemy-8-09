@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import {useHttp} from '../../hooks/http.hook'
 
-import { heroesFetchingError, heroesAdd } from '../../actions';
+import { heroesAdd } from '../../actions';
 // Задача для этого компонента:
 // Реализовать создание нового героя с введенными данными. Он должен попадать
 // в общее состояние и отображаться в списке + фильтроваться
@@ -29,6 +29,7 @@ const HeroesAddForm = () => {
     useEffect(() => {
         request("http://localhost:3001/filters")
             .then(data => setElements(data))
+            .catch(err => console.log(err))
         // eslint-disable-next-line
     }, []);
 
@@ -45,7 +46,8 @@ const HeroesAddForm = () => {
         const json = JSON.stringify(obj)
         request(`http://localhost:3001/heroes`, 'POST', json)
             .then(data => dispatch(heroesAdd(data)))
-            .catch(() => dispatch(heroesFetchingError()))
+            .catch(err => console.log(err));
+        e.target.reset()
     }
 
     return (
@@ -80,9 +82,12 @@ const HeroesAddForm = () => {
                     className="form-select" 
                     id="element" 
                     name="element">
-                    {elements.map(el => {
+                    {elements.map(({id, element, description}) => {
+                        if (description === "Все") {
+                            description = 'Я владею элементом...'
+                        }
                         return (
-                            <option key={el.id} value={el.element}>{el.description}</option>
+                            <option key={id} value={element}>{description}</option>
                         )
                     })}
                 </select>

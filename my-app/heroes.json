@@ -19,10 +19,34 @@
       "element": "water"
     },
     {
-      "id": "4e23ac07-c20f-4d9d-b9d1-6f0f7e1f816b",
-      "name": "Ivan",
-      "description": "weqewq",
+      "id": "6644c282-2572-4bff-94e7-0cd488fa36cb",
+      "name": "Эрик картман",
+      "description": "All",
       "element": "fire"
+    },
+    {
+      "id": "23f7c1e7-a132-47b8-8a24-3be3ca325d54",
+      "name": "dfs",
+      "description": "dfs",
+      "element": "fire"
+    },
+    {
+      "id": "d909264c-2bd1-4687-bcd4-a6bce734e145",
+      "name": "asda",
+      "description": "sada",
+      "element": ""
+    },
+    {
+      "id": "8da64aa9-fc03-46d5-bfc3-121eb46d2cb3",
+      "name": "dsa",
+      "description": "sdad",
+      "element": ""
+    },
+    {
+      "id": "1ce2dd87-e296-427b-b0ee-21262d404cc8",
+      "name": "dcs",
+      "description": "dsf",
+      "element": "water"
     }
   ],
   "filters": [
