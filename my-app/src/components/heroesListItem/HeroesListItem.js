@@ -1,8 +1,10 @@
 import {useHttp} from '../../hooks/http.hook'
 
+import { useCallback } from 'react';
+
 import { useDispatch } from 'react-redux';
 
-import { heroesFetchingError, heroesDelete } from '../../actions';
+import { heroesDelete } from '../../actions';
 
 const HeroesListItem = ({name, description, element, id}) => {
     const dispatch = useDispatch();
@@ -25,12 +27,12 @@ const HeroesListItem = ({name, description, element, id}) => {
         default:
             elementClassName = 'bg-warning bg-gradient';
     }
-    const onDelete = (id) => {
-        
+    const onDelete = useCallback((id) => {       
         request(`http://localhost:3001/heroes/${id}`, 'DELETE')
             .then(() => dispatch(heroesDelete(id)))
-            .catch(() => dispatch(heroesFetchingError()))
-    }
+            .catch(err => console.log(err))
+        // eslint-disable-next-line
+    }, [request])
     return (
         <li 
             className={`card flex-row mb-4 shadow-lg text-white ${elementClassName}`}>

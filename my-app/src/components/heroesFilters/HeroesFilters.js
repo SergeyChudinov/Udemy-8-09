@@ -20,20 +20,21 @@ const HeroesFilters = () => {
 
         request("http://localhost:3001/filters")
             .then(data => setElements(data))
+            .catch(err => console.log(err))
         // eslint-disable-next-line
     }, []);
     const onFilterSelect = (element) => {
         dispatch(heroesFilter(element));
     }
-    console.log(filters)
 
-    const filter = elements.map(el => {
-        const active = filters === el.element;
+    const filter = elements.map(({id, element, className, description}) => {
+        const active = filters === element;
         const clazz = active ? "active" : "";
         return (
-            <button onClick={() => onFilterSelect(el.element)}
-                key={el.id} value={el.element} 
-                className={`${el.className} ${clazz}`}>{el.description}
+            <button onClick={() => onFilterSelect(element)}
+                key={id} value={element} 
+                className={`${className} ${clazz}`}>
+                    {description}
             </button>
         )
     })
