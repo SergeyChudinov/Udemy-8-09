@@ -1,6 +1,16 @@
-import { createStore } from 'redux';
-import reducer from '../reducers';
+import { createStore, combineReducers } from 'redux';
 
-const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+import heroes from '../reducers/heroes';
+import filters from '../reducers/filters';
+
+
+const reducer = combineReducers({
+    heroes: heroes,
+    filters: filters
+})
+
+const store = createStore(reducer, composeWithDevTools());
 
 export default store;

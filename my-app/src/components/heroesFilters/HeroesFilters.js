@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
@@ -12,7 +12,7 @@ import {useHttp} from '../../hooks/http.hook'
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
 const HeroesFilters = () => {
-    const {filters, activeFilter} = useSelector(state => state);
+    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state.filters);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
@@ -23,6 +23,12 @@ const HeroesFilters = () => {
             .catch(() => dispatch(filtersFetchingError()))
         // eslint-disable-next-line
     }, []);
+
+    if (filtersLoadingStatus === "loading") {
+        return <div>Загрузка...</div>;
+    } else if (filtersLoadingStatus === "error") {
+        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
+    }
 
     const elements = filters.map(({id, name, className, label}) => {
         // const active = filters === element;
