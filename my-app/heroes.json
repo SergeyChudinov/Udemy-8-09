@@ -25,60 +25,60 @@
       "element": "fire"
     },
     {
-      "id": "23f7c1e7-a132-47b8-8a24-3be3ca325d54",
-      "name": "dfs",
-      "description": "dfs",
-      "element": "fire"
+      "id": "9081b070-26ca-4b32-85f2-99668db64158",
+      "name": "Эрик картман",
+      "description": "All",
+      "element": "wind"
     },
     {
-      "id": "d909264c-2bd1-4687-bcd4-a6bce734e145",
-      "name": "asda",
-      "description": "sada",
-      "element": ""
-    },
-    {
-      "id": "8da64aa9-fc03-46d5-bfc3-121eb46d2cb3",
-      "name": "dsa",
-      "description": "sdad",
-      "element": ""
-    },
-    {
-      "id": "1ce2dd87-e296-427b-b0ee-21262d404cc8",
-      "name": "dcs",
-      "description": "dsf",
+      "id": "a28df473-2b63-4923-b072-45b096b496bb",
+      "name": "Эрик картман",
+      "description": "All",
       "element": "water"
+    },
+    {
+      "id": "ff3e6e49-a5da-44c4-8845-c29331548f54",
+      "name": "Эрик картман",
+      "description": "All",
+      "element": "earth"
+    },
+    {
+      "id": "7c7e5324-7db1-423b-a91c-ffb48621acea",
+      "name": "Эрик картман",
+      "description": "All",
+      "element": "fire"
     }
   ],
   "filters": [
     {
       "id": 1,
-      "element": "all",
-      "description": "Все",
-      "className": "btn btn-outline-dark"
+      "name": "all",
+      "label": "Все",
+      "className": "btn-outline-dark"
     },
     {
       "id": 2,
-      "element": "fire",
-      "description": "Огонь",
-      "className": "btn btn-danger"
+      "name": "fire",
+      "label": "Огонь",
+      "className": "btn-danger"
     },
     {
       "id": 3,
-      "element": "water",
-      "description": "Вода",
-      "className": "btn btn-primary"
+      "name": "water",
+      "label": "Вода",
+      "className": "btn-primary"
     },
     {
       "id": 4,
-      "element": "wind",
-      "description": "Ветер",
-      "className": "btn btn-success"
+      "name": "wind",
+      "label": "Ветер",
+      "className": "btn-success"
     },
     {
       "id": 5,
-      "element": "earth",
-      "description": "Земля",
-      "className": "btn btn-secondary"
+      "name": "earth",
+      "label": "Земля",
+      "className": "btn-secondary"
     }
   ]
 }

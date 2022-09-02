@@ -15,7 +15,7 @@ import './heroesList.css';
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
-    const {heroes, heroesLoadingStatus, filters} = useSelector(state => state);
+    const {heroes, heroesLoadingStatus, activeFilter} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
@@ -28,8 +28,8 @@ const HeroesList = () => {
         // eslint-disable-next-line
     }, []);
 
-    const filtePost = (items, filter) => {
-        switch (filter) {
+    const filtePost = (items, activeFilter) => {
+        switch (activeFilter) {
             case 'fire':
                 return items.filter(item => item.element === 'fire');
             case 'water':
@@ -42,7 +42,7 @@ const HeroesList = () => {
                 return items;             
         }
     }
-    const filtredHeroes = filtePost(heroes, filters);
+    const filtredHeroes = filtePost(heroes, activeFilter);
 
     if (heroesLoadingStatus === "loading") {
         return <Spinner/>;
@@ -53,7 +53,6 @@ const HeroesList = () => {
     const renderHeroesList = (arr) => {
         if (arr.length === 0) {
             return (
-                // <h5 className="text-center mt-5">Героев пока нет</h5>
                 <CSSTransition
                     timeout={0}
                     classNames="hero">
@@ -64,7 +63,6 @@ const HeroesList = () => {
 
         return arr.map(({id, ...props}) => {
             return (
-                // <HeroesListItem key={id} {...props} id={id}/>
                 <CSSTransition 
                     key={id}
                     timeout={500}
@@ -77,9 +75,6 @@ const HeroesList = () => {
 
     const elements = renderHeroesList(filtredHeroes);
     return (
-        // <ul>
-        //     {elements}
-        // </ul>
         <TransitionGroup component="ul">
             {elements}
         </TransitionGroup>

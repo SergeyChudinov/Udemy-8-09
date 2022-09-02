@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import classNames from 'classnames';
 
-import { heroesFilter } from '../../actions';
+import { filtersFetching, filtersFetched, filtersFetchingError, activeFilterChanged } from '../../actions';
 import {useHttp} from '../../hooks/http.hook'
 // Задача для этого компонента:
 // Фильтры должны формироваться на основании загруженных данных
@@ -11,39 +12,38 @@ import {useHttp} from '../../hooks/http.hook'
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
 const HeroesFilters = () => {
-    const {filters} = useSelector(state => state);
+    const {filters, activeFilter} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
-    const [elements, setElements] = useState([]);
 
     useEffect(() => {
-
+        dispatch(filtersFetching());
         request("http://localhost:3001/filters")
-            .then(data => setElements(data))
-            .catch(err => console.log(err))
+            .then(data => dispatch(filtersFetched(data)))
+            .catch(() => dispatch(filtersFetchingError()))
         // eslint-disable-next-line
     }, []);
-    const onFilterSelect = (element) => {
-        dispatch(heroesFilter(element));
-    }
 
-    const filter = elements.map(({id, element, className, description}) => {
-        const active = filters === element;
-        const clazz = active ? "active" : "";
+    const elements = filters.map(({id, name, className, label}) => {
+        // const active = filters === element;
+        // const clazz = active ? "active" : "";
+        const btnClass = classNames('btn', className, {
+            'active': name === activeFilter
+        });
         return (
-            <button onClick={() => onFilterSelect(element)}
-                key={id} value={element} 
-                className={`${className} ${clazz}`}>
-                    {description}
+            <button onClick={() => dispatch(activeFilterChanged(name))}
+                key={id} value={name} 
+                className={btnClass}>  
+                    {label}
             </button>
-        )
+        )       
     })
     return (
         <div className="card shadow-lg mt-4">
             <div className="card-body">
                 <p className="card-text">Отфильтруйте героев по элементам</p>
                 <div className="btn-group">
-                    {filter}
+                    {elements}
                 </div>
             </div>
         </div>

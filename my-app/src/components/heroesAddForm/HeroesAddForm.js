@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -17,24 +17,14 @@ import { heroesAdd } from '../../actions';
 // данных из фильтров
 
 const HeroesAddForm = () => {
+    const {filters, filtersLoadingStatus} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
     const [nameHero, setNameHero] = useState('');
     const [descriptionHero, setDescriptionHeroero] = useState('');
     const [elementHero, setElementHero] = useState('');
-    const [elements, setElements] = useState([]);
 
-    // console.log(nameHero, descriptionHero, elementHero)
 
-    useEffect(() => {
-        request("http://localhost:3001/filters")
-            .then(data => setElements(data))
-            .catch(err => console.log(err))
-        // eslint-disable-next-line
-    }, []);
-
-    
-    // console.log(filters)
     const handleSubmit = (e) => {
         e.preventDefault()
         const obj = {
@@ -48,6 +38,25 @@ const HeroesAddForm = () => {
             .then(data => dispatch(heroesAdd(data)))
             .catch(err => console.log(err));
         e.target.reset()
+    }
+
+    const renderFilters = (filters, status) => {
+        if (status === "loading") {
+            return <option>Загрузка элементов</option>
+        } else if (status === "error") {
+            return <option>Ошибка загрузки</option>
+        }
+        console.log(filters, status)
+        // Если фильтры есть, то рендерим их
+        if (filters && filters.length > 0 ) {
+            return filters.map(({name, label}) => {
+                // Один из фильтров нам тут не нужен
+                // eslint-disable-next-line
+                if (name === 'all')  return;
+
+                return <option key={name} value={name}>{label}</option>
+            })
+        }
     }
 
     return (
@@ -82,14 +91,16 @@ const HeroesAddForm = () => {
                     className="form-select" 
                     id="element" 
                     name="element">
-                    {elements.map(({id, element, description}) => {
+                    {/* {filters.map(({id, element, description}) => {
                         if (description === "Все") {
                             description = 'Я владею элементом...'
                         }
                         return (
                             <option key={id} value={element}>{description}</option>
                         )
-                    })}
+                    })} */}
+                    <option value="">Я владею элементом...</option>
+                    {renderFilters(filters, filtersLoadingStatus)}
                 </select>
             </div>
 
@@ -100,5 +111,3 @@ const HeroesAddForm = () => {
 
 export default HeroesAddForm;
 
-
-// dispatch(heroesAdd(data))
