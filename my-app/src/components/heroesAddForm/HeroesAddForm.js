@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -17,7 +17,7 @@ import { heroesAdd } from '../../actions';
 // данных из фильтров
 
 const HeroesAddForm = () => {
-    const {filters, filtersLoadingStatus} = useSelector(state => state);
+    const {filters, filtersLoadingStatus} = useSelector(state => state.filters);
     const dispatch = useDispatch();
     const {request} = useHttp();
     const [nameHero, setNameHero] = useState('');
@@ -46,7 +46,6 @@ const HeroesAddForm = () => {
         } else if (status === "error") {
             return <option>Ошибка загрузки</option>
         }
-        console.log(filters, status)
         // Если фильтры есть, то рендерим их
         if (filters && filters.length > 0 ) {
             return filters.map(({name, label}) => {

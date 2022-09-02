@@ -2,6 +2,7 @@ import {useHttp} from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
+import { createSelector } from 'reselect'
 
 import { heroesFetching, heroesFetched, heroesFetchingError } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
@@ -15,10 +16,32 @@ import './heroesList.css';
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
-    const {heroes, heroesLoadingStatus, activeFilter} = useSelector(state => state);
+    const filteredHeroesSelector = createSelector(
+        (state) => state.filters.activeFilter,
+        (state) => state.heroes.heroes,
+        (filter, heroes) => {
+            if (filter === 'all') {
+                console.log('render')
+                return heroes
+            } else {
+                return heroes.filter(hero => hero.element === filter)
+            }
+        }
+    )
+    // const filtredHeroes = useSelector(state => {
+    //     if (state.filters.activeFilter === 'all') {
+    //         console.log('render')
+    //         return state.heroes.heroes
+    //     } else {
+    //         return state.heroes.heroes.filter(hero => hero.element === state.filters.activeFilter)
+    //     }
+    // })
+    const filtredHeroes = useSelector(filteredHeroesSelector)
+
+    const {heroesLoadingStatus} = useSelector(state => state.heroes);
     const dispatch = useDispatch();
     const {request} = useHttp();
-
+     
     useEffect(() => {
         dispatch(heroesFetching());
         request("http://localhost:3001/heroes")
@@ -27,22 +50,6 @@ const HeroesList = () => {
 
         // eslint-disable-next-line
     }, []);
-
-    const filtePost = (items, activeFilter) => {
-        switch (activeFilter) {
-            case 'fire':
-                return items.filter(item => item.element === 'fire');
-            case 'water':
-                return items.filter(item => item.element === 'water');
-            case 'wind':
-                return items.filter(item => item.element === 'wind');
-            case 'earth':
-                return items.filter(item => item.element === 'earth');    
-            default:
-                return items;             
-        }
-    }
-    const filtredHeroes = filtePost(heroes, activeFilter);
 
     if (heroesLoadingStatus === "loading") {
         return <Spinner/>;
