@@ -1,11 +1,12 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
+import {configureStore} from '@reduxjs/toolkit';
 import ReduxThunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import heroes from '../reducers/heroes';
 import filters from '../reducers/filters';
 
-const srtingMiddleware = (store) => (next) => (action) => {
+const stringMiddleware = (store) => (next) => (action) => {
     if (typeof action === 'string') {
         return next({
             type: action
@@ -42,13 +43,18 @@ const reducer = combineReducers({
     heroes: heroes,
     filters: filters
 })
-const store = createStore(reducer,
-                compose(
-                    applyMiddleware(ReduxThunk, srtingMiddleware),
-                    composeWithDevTools()
-                )
-            );
+// const store = createStore(reducer,
+//                 compose(
+//                     applyMiddleware(ReduxThunk, stringMiddleware),
+//                     composeWithDevTools()
+//                 )
+//             );
+
+const store = configureStore({
+    reducer: {heroes, filters},
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(stringMiddleware, time),
+    devTools: process.env.NODE_ENV !== 'production'
+})
 
 export default store;
 
-// composeWithDevTools()
