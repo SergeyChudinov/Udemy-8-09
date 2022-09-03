@@ -1,10 +1,9 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
-
+import ReduxThunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import heroes from '../reducers/heroes';
 import filters from '../reducers/filters';
-
 
 const srtingMiddleware = (store) => (next) => (action) => {
     if (typeof action === 'string') {
@@ -14,8 +13,6 @@ const srtingMiddleware = (store) => (next) => (action) => {
     }
     return next(action)
 }
-
-
 const enhancer = (createStore) => (...args) => {
     const store = createStore(...args);
     const oldDispatch = store.dispatch;
@@ -29,15 +26,25 @@ const enhancer = (createStore) => (...args) => {
     }
     return store
 }
-
+const time = (store) => (next) => (action) => {
+    const deley = action?.meta?.deley;
+    if (!deley) {
+        return next(action)
+    }
+    const timout = setTimeout(() => {
+        next(action)
+    }, deley)
+    return () => {
+        clearInterval(timout)
+    }
+}
 const reducer = combineReducers({
     heroes: heroes,
     filters: filters
 })
-
 const store = createStore(reducer,
                 compose(
-                    applyMiddleware(srtingMiddleware),
+                    applyMiddleware(ReduxThunk, srtingMiddleware),
                     composeWithDevTools()
                 )
             );
