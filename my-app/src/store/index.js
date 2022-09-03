@@ -1,9 +1,20 @@
-import { createStore, combineReducers, compose } from 'redux';
+import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import heroes from '../reducers/heroes';
 import filters from '../reducers/filters';
+
+
+const srtingMiddleware = (store) => (next) => (action) => {
+    if (typeof action === 'string') {
+        return next({
+            type: action
+        })
+    }
+    return next(action)
+}
+
 
 const enhancer = (createStore) => (...args) => {
     const store = createStore(...args);
@@ -25,10 +36,11 @@ const reducer = combineReducers({
 })
 
 const store = createStore(reducer,
-              compose(
-                enhancer,
-                composeWithDevTools()
-              ));
+                compose(
+                    applyMiddleware(srtingMiddleware),
+                    composeWithDevTools()
+                )
+            );
 
 export default store;
 
