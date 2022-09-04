@@ -1,7 +1,8 @@
 import {configureStore} from '@reduxjs/toolkit';
+import logger from 'redux-logger';
 
-import heroes from '../reducers/heroes';
-import filters from '../reducers/filters';
+import heroes from '../components/heroesList/heroesSlice';
+import filters from '../components/heroesFilters/filtersSlice';
 
 const stringMiddleware = (store) => (next) => (action) => {
     if (typeof action === 'string') {
