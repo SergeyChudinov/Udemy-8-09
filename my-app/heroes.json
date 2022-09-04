@@ -17,6 +17,18 @@
       "name": "Морской герой",
       "description": "Как аквамен, но не из DC",
       "element": "water"
+    },
+    {
+      "id": "6f96fe2e-b5b0-4798-bf56-d0e0f5089b98",
+      "name": "Эрик картман",
+      "description": "All",
+      "element": "earth"
+    },
+    {
+      "id": "b634c84e-b03b-423e-b14d-8b50e1658d25",
+      "name": "Эрик картман",
+      "description": "All",
+      "element": "earth"
     }
   ],
   "filters": [
