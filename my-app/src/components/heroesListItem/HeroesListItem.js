@@ -1,14 +1,5 @@
-import {useHttp} from '../../hooks/http.hook'
 
-import { useCallback } from 'react';
-
-import { useDispatch } from 'react-redux';
-
-import { heroesDelete } from '../../actions';
-
-const HeroesListItem = ({name, description, element, id}) => {
-    const dispatch = useDispatch();
-    const {request} = useHttp();
+const HeroesListItem = ({name, description, element, onDelete}) => {
     let elementClassName;
 
     switch (element) {
@@ -27,12 +18,7 @@ const HeroesListItem = ({name, description, element, id}) => {
         default:
             elementClassName = 'bg-warning bg-gradient';
     }
-    const onDelete = useCallback((id) => {       
-        request(`http://localhost:3001/heroes/${id}`, 'DELETE')
-            .then(() => dispatch(heroesDelete(id)))
-            .catch(err => console.log(err))
-        // eslint-disable-next-line
-    }, [request])
+
     return (
         <li 
             className={`card flex-row mb-4 shadow-lg text-white ${elementClassName}`}>
@@ -45,8 +31,8 @@ const HeroesListItem = ({name, description, element, id}) => {
                 <h3 className="card-title">{name}</h3>
                 <p className="card-text">{description}</p>
             </div>
-            <span className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light">
-                <button onClick={() => onDelete(id)} type="button" className="btn-close btn-close" aria-label="Close"></button>
+            <span onClick={onDelete}  className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light">
+                <button type="button" className="btn-close btn-close" aria-label="Close"></button>
             </span>
         </li>
     )
