@@ -41,7 +41,7 @@ const time = (store) => (next) => (action) => {
 
 const store = configureStore({
     reducer: {heroes, filters},
-    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(stringMiddleware, time),
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(stringMiddleware, time, logger),
     devTools: process.env.NODE_ENV !== 'production'
 })
 
