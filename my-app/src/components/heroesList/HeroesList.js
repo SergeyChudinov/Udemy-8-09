@@ -2,50 +2,22 @@ import {useHttp} from '../../hooks/http.hook';
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
-import { createSelector } from "@reduxjs/toolkit";
 
-import { heroesDelete, fetchHeroes } from './heroesSlice';
+import { heroesDelete, fetchHeroes, filteredHeroesSelector } from './heroesSlice';
 
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 
 import './heroesList.css';
 
-// Задача для этого компонента:
-// При клике на "крестик" идет удаление персонажа из общего состояния
-// Усложненная задача:
-// Удаление идет и с json файла при помощи метода DELETE
-
 const HeroesList = () => {
-    const filteredHeroesSelector = createSelector(
-        (state) => state.filters.activeFilter,
-        (state) => state.heroes.heroes,
-        (filter, heroes) => {
-            if (filter === 'all') {
-                console.log('render')
-                return heroes
-            } else {
-                return heroes.filter(hero => hero.element === filter)
-            }
-        }
-    )
-    // const filtredHeroes = useSelector(state => {
-    //     if (state.filters.activeFilter === 'all') {
-    //         console.log('render')
-    //         return state.heroes.heroes
-    //     } else {
-    //         return state.heroes.heroes.filter(hero => hero.element === state.filters.activeFilter)
-    //     }
-    // })
     const filtredHeroes = useSelector(filteredHeroesSelector)
-
     const {heroesLoadingStatus} = useSelector(state => state.heroes);
     const dispatch = useDispatch();
     const {request} = useHttp();
      
     useEffect(() => {
         dispatch(fetchHeroes());
-
         // eslint-disable-next-line
     }, []);
     const onDelete = useCallback((id) => {       
