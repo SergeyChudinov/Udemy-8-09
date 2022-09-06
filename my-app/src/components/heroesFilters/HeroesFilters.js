@@ -3,13 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import store from '../../store';
 
-import { activeFilterChanged, fetchFilters, selectAll } from './filtersSlice';
-// Задача для этого компонента:
-// Фильтры должны формироваться на основании загруженных данных
-// Фильтры должны отображать только нужных героев при выборе
-// Активный фильтр имеет класс active
-// Изменять json-файл для удобства МОЖНО!
-// Представьте, что вы попросили бэкенд-разработчика об этом
+import { filtersChanged, fetchFilters, selectAll } from './filtersSlice';
 
 const HeroesFilters = () => {
     const {filtersLoadingStatus, activeFilter} = useSelector(state => state.filters);
@@ -18,7 +12,6 @@ const HeroesFilters = () => {
 
     useEffect(() => {
         dispatch(fetchFilters());
-
         // eslint-disable-next-line
     }, []);
 
@@ -29,13 +22,11 @@ const HeroesFilters = () => {
     }
 
     const elements = filters.map(({id, name, className, label}) => {
-        // const active = filters === element;
-        // const clazz = active ? "active" : "";
         const btnClass = classNames('btn', className, {
             'active': name === activeFilter
         });
         return (
-            <button onClick={() => dispatch(activeFilterChanged(name))}
+            <button onClick={() => dispatch(filtersChanged(name))}
                 key={id} value={name} 
                 className={btnClass}>  
                     {label}

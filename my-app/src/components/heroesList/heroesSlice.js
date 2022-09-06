@@ -16,14 +16,8 @@ const heroesSlice = createSlice({
     name: 'heroes',
     initialState,
     reducers: {
-        // heroesFetching: state => {state.heroesLoadingStatus = 'loading'},
-        // heroesFetched: (state, action) => {
-        //     state.heroesLoadingStatus = 'idle';
-        //     state.heroes = action.payload;
-        // },
-        // heroesFetchingError: state => {state.heroesLoadingStatus = 'error'},
-        heroesDelete: (state, action) => {heroesAdapter.removeOne(state, action.payload)},
-        heroesAdd: (state, action) => {heroesAdapter.addOne(state, action.payload)} 
+        heroDeleted: (state, action) => {heroesAdapter.removeOne(state, action.payload)},
+        heroCreated: (state, action) => {heroesAdapter.addOne(state, action.payload)} 
     },
     extraReducers: (builder) => {
         builder
@@ -40,6 +34,7 @@ const {actions, reducer} = heroesSlice;
 export default reducer;
 
 const {selectAll} = heroesAdapter.getSelectors(state => state.heroes);
+
 export const filteredHeroesSelector = createSelector(
     (state) => state.filters.activeFilter,
     selectAll,
@@ -53,6 +48,6 @@ export const filteredHeroesSelector = createSelector(
 )
 
 export const {
-    heroesDelete,
-    heroesAdd
+    heroDeleted,
+    heroCreated
 } = actions;
