@@ -6,11 +6,6 @@ const initialState = filtersAdapter.getInitialState({
     heroesLoadingStatus: 'idle',
     activeFilter: 'all'
 });
-// const initialState = {
-//     filters: [],
-//     filtersLoadingStatus: 'idle',
-//     activeFilter: 'all'
-// }
 export const fetchFilters = createAsyncThunk(
     'filters/fetchFilters',
     () => {
@@ -22,13 +17,7 @@ const filtersSlice = createSlice({
     name: 'filters',
     initialState,
     reducers: {
-        // filtersFetching: state => {state.filtersLoadingStatus = 'loading'},
-        // filtersFetched: (state, action) => {
-        //     state.filtersLoadingStatus = 'idle';
-        //     state.filters = action.payload;
-        // },
-        // filtersFetchingError: state => {state.filtersLoadingStatus = 'error'},
-        activeFilterChanged: (state, action) => {state.activeFilter = action.payload}
+        filtersChanged: (state, action) => {state.activeFilter = action.payload}
     },
     extraReducers: (builder) => {
         builder
@@ -46,5 +35,5 @@ export default reducer;
 export const {selectAll} = filtersAdapter.getSelectors(state => state.filters);
 
 export const {
-    activeFilterChanged
+    filtersChanged
 } = actions;

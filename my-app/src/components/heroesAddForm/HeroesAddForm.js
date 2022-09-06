@@ -1,25 +1,23 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import {useHttp} from '../../hooks/http.hook'
-
-import { heroesAdd } from '../heroesList/heroesSlice';
 import { selectAll } from '../heroesFilters/filtersSlice';
 import store from '../../store';
+
+import { useCreateHeroMutation } from "../../api/apiSlice"; 
 
 const HeroesAddForm = () => {
     const {filtersLoadingStatus} = useSelector(state => state.filters);
     const filters = selectAll(store.getState());
-    const dispatch = useDispatch();
-    const {request} = useHttp();
     const [nameHero, setNameHero] = useState('');
     const [descriptionHero, setDescriptionHeroero] = useState('');
     const [elementHero, setElementHero] = useState('');
 
+    const [createHero] = useCreateHeroMutation()
 
-    const handleSubmit = (e) => {
+    const onSubmitHandler = (e) => {
         e.preventDefault()
         const obj = {
             id: uuidv4(),
@@ -27,10 +25,7 @@ const HeroesAddForm = () => {
             description: `${descriptionHero}`,
             element: `${elementHero}`
         }
-        const json = JSON.stringify(obj)
-        request(`http://localhost:3001/heroes`, 'POST', json)
-            .then(data => dispatch(heroesAdd(data)))
-            .catch(err => console.log(err));
+        createHero(obj).unwrap();  
         e.target.reset()
     }
 
@@ -40,20 +35,15 @@ const HeroesAddForm = () => {
         } else if (status === "error") {
             return <option>Ошибка загрузки</option>
         }
-        // Если фильтры есть, то рендерим их
         if (filters && filters.length > 0 ) {
             return filters.map(({name, label}) => {
-                // Один из фильтров нам тут не нужен
-                // eslint-disable-next-line
                 if (name === 'all')  return;
-
                 return <option key={name} value={name}>{label}</option>
             })
         }
     }
-
     return (
-        <form  onSubmit={(e) => handleSubmit(e)}
+        <form  onSubmit={(e) => onSubmitHandler(e)}
             className="border p-4 shadow-lg rounded">
             <div className="mb-3">
                 <label htmlFor="name" className="form-label fs-4">Имя нового героя</label>
@@ -84,14 +74,6 @@ const HeroesAddForm = () => {
                     className="form-select" 
                     id="element" 
                     name="element">
-                    {/* {filters.map(({id, element, description}) => {
-                        if (description === "Все") {
-                            description = 'Я владею элементом...'
-                        }
-                        return (
-                            <option key={id} value={element}>{description}</option>
-                        )
-                    })} */}
                     <option value="">Я владею элементом...</option>
                     {renderFilters(filters, filtersLoadingStatus)}
                 </select>

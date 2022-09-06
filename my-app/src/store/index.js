@@ -1,8 +1,8 @@
 import {configureStore} from '@reduxjs/toolkit';
 import logger from 'redux-logger';
-
-import heroes from '../components/heroesList/heroesSlice';
 import filters from '../components/heroesFilters/filtersSlice';
+
+import { apiSlice } from '../api/apiSlice'; //+
 
 const stringMiddleware = (store) => (next) => (action) => {
     if (typeof action === 'string') {
@@ -40,8 +40,9 @@ const time = (store) => (next) => (action) => {
 
 
 const store = configureStore({
-    reducer: {heroes, filters},
-    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(stringMiddleware, time),
+    reducer: {filters,
+             [apiSlice.reducerPath]: apiSlice.reducer},   //+
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(stringMiddleware, apiSlice.middleware),     //+
     devTools: process.env.NODE_ENV !== 'production'
 })
 
