@@ -15,7 +15,7 @@ const HeroesAddForm = () => {
     const [descriptionHero, setDescriptionHeroero] = useState('');
     const [elementHero, setElementHero] = useState('');
 
-    const [createHero] = useCreateHeroMutation()
+    const [createHero, {isLoading}] = useCreateHeroMutation()
 
     const onSubmitHandler = (e) => {
         e.preventDefault()

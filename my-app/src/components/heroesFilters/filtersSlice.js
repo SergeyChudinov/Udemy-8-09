@@ -3,7 +3,7 @@ import {useHttp} from '../../hooks/http.hook';
 
 const filtersAdapter = createEntityAdapter();
 const initialState = filtersAdapter.getInitialState({
-    heroesLoadingStatus: 'idle',
+    filtersLoadingStatus: 'idle',
     activeFilter: 'all'
 });
 export const fetchFilters = createAsyncThunk(

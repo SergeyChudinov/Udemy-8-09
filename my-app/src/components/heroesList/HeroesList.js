@@ -13,6 +13,7 @@ const HeroesList = () => {
     const {
         data: heroes = [],
         isLoading,
+        isFetching,
         isError
     } = useGetHeroesQuery()     
 
@@ -35,7 +36,7 @@ const HeroesList = () => {
         // eslint-disable-next-line
     }, []) 
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
         return <Spinner/>;
     } else if (isError) {
         return <h5 className="text-center mt-5">Ошибка загрузки</h5>
